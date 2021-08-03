@@ -29,11 +29,22 @@ id: 1627349245352547200
 
 ##  [User.java](demo\src\main\java\com\example\demo\entity\User.java) 
 
-在此校验一个字段，此字段长度最小为 2 ，最大为 5：
+### 内置 constraints 
+
+你可以使用内置的 constraints 比如 [@Email](https://docs.jboss.org/hibernate/stable/beanvalidation/api/javax/validation/constraints/Email.html) ：
 
 ```java
-    @Size(min = 2, max = 5)
-    private String name;
+    @Email
+    private String email;
+```
+
+### 正则表达式 constraints 
+
+你也可以使用自定义的正则表达式校验：
+
+```java
+    @Pattern(regexp = "^[\\u4e00-\\u9fa5]*$", message = "需要一个中文名")
+    private String ChineseName;
 ```
 
 ##  [UserController.java](demo\src\main\java\com\example\demo\controller\UserController.java) 
@@ -49,26 +60,24 @@ id: 1627349245352547200
 
 ## swagger 测试
 
-http://localhost:8080/swagger-ui.html 
+http://localhost:8080/swagger-ui.html 
 
 ### 测试用例
 
 ```json
 {
   "age": 0,
+  "chineseName": "string",
   "email": "string",
-  "id": 0,
-  "name": "123456"
+  "id": 0
 }
 ```
 
 ### 测试结果
 
-`name` 字段有六个字符，不符合要求，因此报错
-
 ```json
 {
-  "timestamp": "2021-08-02T12:12:34.597+00:00",
+  "timestamp": "2021-08-03T05:50:21.340+00:00",
   "status": 400,
   "error": "Bad Request",
   "path": "/userValid"
@@ -77,11 +86,11 @@ http://localhost:8080/swagger-ui.html 
 
 # 常用api
 
-本例中使用了[@Size](https://docs.jboss.org/hibernate/stable/beanvalidation/api/javax/validation/constraints/Size.html) 注解，其他常用注解可见于： [javax.validation.constraints](https://docs.jboss.org/hibernate/stable/beanvalidation/api/javax/validation/constraints/package-summary.html) 
+本例中使用了[@Email](https://docs.jboss.org/hibernate/stable/beanvalidation/api/javax/validation/constraints/Email.html) 注解，其他常用注解可见于： [javax.validation.constraints](https://docs.jboss.org/hibernate/stable/beanvalidation/api/javax/validation/constraints/package-summary.html) 
 
 # [发展过程](assets\references\springboot项目以注解方式实现后端数据验证.html) 
 
-##   [JSR规范提案](https://jcp.org/en/jsr/summary?id=bean%20validation) 
+##   [JSR规范提案](https://jcp.org/en/jsr/summary?id=bean%20validation) 
 
 JSR：Java Specification Requests的缩写，意思是Java 规范提案。是指向JCP(Java Community Process)提出新增一个标准化技术规范的正式请求。任何人都可以提交JSR，以向Java平台增添新的API和服务，JSR已成为Java界的一个重要标准。
 本文介绍的Bean Validation 就是出自 JSR-303 规范提案。

@@ -2,18 +2,22 @@ package com.example.demo.entity;
 
 import lombok.Data;
 
-import javax.validation.constraints.Size;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 
 @Data
 public class User {
 
     private Long id;
 
-    @Size(min = 2, max = 5)
-    private String name;
+    @Email
+    private String email;
+
+    @Pattern(regexp = "^[\\u4e00-\\u9fa5]*$", message = "需要一个中文名")
+    private String ChineseName;
 
     private Integer age;
 
-    private String email;
+    private String mobile;
 
 }
